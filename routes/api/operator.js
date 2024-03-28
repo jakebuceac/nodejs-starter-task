@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var webSocketServer = require('../../websocket');
+import express from "express";
+import webSocketServer from "../../websocket.js";
+import redis from "redis";
 
-const redis = require('redis');
+var router = express.Router();
 const client = redis.createClient();
 
 /* GET home page. */
@@ -47,5 +47,5 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-module.exports = router;
+export default router;
  
