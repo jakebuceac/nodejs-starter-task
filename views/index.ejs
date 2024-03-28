@@ -1,0 +1,140 @@
+<%- include('header'); -%>
+<div class="m-3">
+    <div class="d-flex flex-row mb-3">
+        <div class="mx-2 w-100">
+            <div class="card" id="100">
+                <div class="card-header"><h6 class="header"></h6></div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Status</p>
+                        </div>
+                        <div>
+                            <p class="status"><b></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mx-2 w-100">
+            <div class="card" id="101">
+                <div class="card-header"><h6 class="header"></h6></div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Status</p>
+                        </div>
+                        <div>
+                            <p class="status"><b></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mx-2 w-100">
+            <div class="card" id="102">
+                <div class="card-header"><h6 class="header"></h6></div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Status</p>
+                        </div>
+                        <div>
+                            <p class="status"><b></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mx-2 w-100">
+            <div class="card" id="103">
+                <div class="card-header"><h6 class="header"></h6></div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Status</p>
+                        </div>
+                        <div>
+                            <p class="status"><b></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function connect() {
+        const ws = new WebSocket('ws://localhost:443/');
+
+        ws.onopen = function() {
+            console.log("We are connected");
+        };
+
+        ws.onmessage = function(e) {
+            console.log('Message has been sent.');
+
+            const socketData = JSON.parse(event.data);
+
+            console.log(socketData);
+
+            if (socketData.type === 'connection') {
+                for (const [key, value] of Object.entries(socketData.data)) {
+                    const card = document.getElementById(key);
+                    const header = card.querySelector('.card-header');
+
+                    card.querySelector('.header').textContent = `${value.name} (${key})`;
+                    card.querySelector('.status').textContent = value.status;
+
+                    header.classList.remove('bg-success-subtle', 'bg-danger-subtle', 'bg-info-subtle', 'bg-white');
+                    header.classList.add(mapColor(value.status));
+                }
+            }     
+            
+            if (socketData.type === 'update') {
+                console.log(socketData.data);
+                const card = document.getElementById(socketData.data.id);
+                const header = card.querySelector('.card-header');
+
+                card.querySelector('.header').textContent = `${socketData.data.name} (${socketData.data.id})`;
+                card.querySelector('.status').textContent = socketData.data.status;
+
+                header.classList.remove('bg-success-subtle', 'bg-danger-subtle', 'bg-info-subtle', 'bg-white');
+                header.classList.add(mapColor(socketData.data.status));
+            }   
+        };
+
+        ws.onclose = function(e) {
+            console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+            setTimeout(function() {
+                connect();
+            }, 1000);
+        };
+
+        ws.onerror = function(err) {
+            console.error('Socket encountered error: ', err.message, 'Closing socket');
+            ws.close();
+        };
+    }
+
+    function mapColor(status) {
+        return (() => {
+            switch (status) {
+                case 'Waiting':
+                    return 'bg-success-subtle';
+                case 'Lunch':
+                    return 'bg-danger-subtle';
+                case 'In Call':
+                    return 'bg-info-subtle';
+                case 'Meeting':
+                    return 'bg-danger-subtle';
+                default:
+                    return 'bg-white';
+            }
+        })();
+    }
+
+    connect();
+  </script>
+<%- include('footer'); -%>
