@@ -7,4 +7,4 @@ Is my attempt at setting up a node.js project that serves both web/API routes wh
 
 ## Authors
 
-Written by Jake Buceac in March 2023.
+Written by Jake Buceac in March 2024.
