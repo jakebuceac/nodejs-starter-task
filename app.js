@@ -1,23 +1,28 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import createError from "http-errors";
+import express from "express";
+import path from "path";
+import {fileURLToPath} from 'url';
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import redis from "redis";
 
-var webSocketServer = require('./websocket');
+import apiOperator from "./routes/api/operator.js";
+import indexRouter from "./routes/index.js";
+import usersRouter from "./routes/users.js";
 
-const redis = require('redis');
+import webSocketServer from "./websocket.js";
+
 const client = redis.createClient();
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 client.connect();
 
 client.on('error', (err) => {
     console.log(`Error ${err}`)
 });
-
-var apiOperator = require('./routes/api/operator');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -65,4 +70,4 @@ webSocketServer.on('connection', async function connection(webSocketServer) {
   webSocketServer.send(JSON.stringify(message));
 });
 
-module.exports = app;
+export default app;

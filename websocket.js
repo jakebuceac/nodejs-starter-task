@@ -1,5 +1,5 @@
-var { WebSocketServer } = require('ws');
+import {WebSocketServer} from "ws";
 
-var webSocketServer = new WebSocketServer({ port: 443});
+const webSocketServer = new WebSocketServer({ port: 443 });
 
-module.exports = webSocketServer;
+export default webSocketServer;
