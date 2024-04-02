@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "build": "npx tsc",
-    "start": "tsx ./bin/www.ts",
-    "watch": "tsx --watch app.ts"
+    "start": "tsx ./src/bin/www.ts",
+    "watch": "tsx --watch ./src/app.ts"
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
