@@ -1,5 +1,5 @@
 ## About The NodeJS Starter Task
-Is my attempt at setting up a node.js project that serves both web/API routes and create a WebSocket server.
+Is my attempt at setting up a node.js project that serves both web/API routes and a WebSocket server.
 
 ## Technologies Used
 - Express.js - [https://expressjs.com/](https://expressjs.com/)
